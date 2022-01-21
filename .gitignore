@@ -56,6 +56,14 @@ docs/_build/
 # PyBuilder
 target/
 
-# Mac File
+# Local files
 .DS_Store
+*/.DS_Store
+*/.idea/
 .idea/
+*.bak
+*.tmp
+*.iml
+*.ipr
+*.iws
+out
