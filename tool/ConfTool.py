@@ -12,11 +12,11 @@ class ConfTool(object):
     """
     json配置文件类
     """
+
     @staticmethod
     def load():
         """
-        读取配置文件
-        :return:
+        :return:读取配置文件
         """
         with open("../project.config.json") as json_file:
             data = json.load(json_file)
@@ -25,9 +25,8 @@ class ConfTool(object):
     @staticmethod
     def update(config):
         """
-        更新配置文件
         :param config: 字典
-        :return:
+        :return:更新配置文件
         """
         with open("../project.config.json", 'w') as json_file:
             # json_file.write(json.dumps(config, indent=4))

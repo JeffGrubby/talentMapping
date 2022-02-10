@@ -14,6 +14,9 @@ from tool.ConfTool import ConfTool
 
 
 class Enterprise:
+    """
+    爱企查企业详细信息爬取脚本
+    """
     def __init__(self):
         self.url_prefix = 'https://aiqicha.baidu.com/s?t=0&q='
         self.header = ConfTool.load()['request']['header']
@@ -31,7 +34,7 @@ class Enterprise:
         """
         模拟aiqicha首页键入文本请求获取详情页面参数
         :param key:企业名称(建议全称)
-        :return:
+        :return:None
         """
         url = self.url_prefix + urllib.parse.quote(key)
         self.header['Referer'] = url
@@ -50,7 +53,7 @@ class Enterprise:
         """
         请求企业基本信息数据
         :param pid:企业详情页面ID
-        :return:
+        :return:None
         """
         url = 'https://aiqicha.baidu.com/detail/basicAllDataAjax?pid={0}'.format(pid)
         self.header['Referer'] = 'https://aiqicha.baidu.com/company_detail_{0}'.format(pid)
@@ -65,7 +68,7 @@ class Enterprise:
         """
         解析JSON结果并保存至数据库
         :param basicdata:请求返回结果
-        :return:
+        :return:None
         """
         entName = basicdata['entName']
         regNo = basicdata['regNo']
@@ -91,20 +94,20 @@ class Enterprise:
 
         data = ConfTool.load()['mysql']
         db = pymysql.connect(host=data['host'], port=data['port'], user=data['user'],
-                                  password=data['password'], database=data['database'][0], charset=data['charset'])
+                             password=data['password'], database=data['database'][0], charset=data['charset'])
         cursor = db.cursor()
         cursor.execute(self.sql, (entName, regNo, legalPerson, openStatus, startDate, district, regCapital,
-                   paidinCapital, entType, industry, regCode, orgNo, taxNo, qualification, openTime, annualDate,
-                   authority,prevEntName, regAddr, latlong, scope))
+                                  paidinCapital, entType, industry, regCode, orgNo, taxNo, qualification, openTime,
+                                  annualDate,
+                                  authority, prevEntName, regAddr, latlong, scope))
         db.commit()
         cursor.close()
         db.close()
 
     def get_lat_long(self, address):
         """
-        地址转换经纬度
         :param address:中文地址
-        :return:
+        :return:地址转换经纬度
         """
         url = 'http://api.map.baidu.com/geocoder?output=json&address={0}'.format(urllib.parse.quote(address))
         result = self.session.get(url, headers=self.header).json()['result']['location']
